@@ -1,0 +1,1751 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: https://api.dev.gmint.io/massivetransaction
+  description: Sandbox env
+- url: https://api.gcoin.com/massivetransaction
+  description: Production env
+tags:
+- name: WebHookSubscription
+  description: WebHookSubscription API
+- name: Transactions
+  description: Rest endpoints for setting up and managing transactions.
+- name: Recipients
+  description: Rest endpoints for interacting with a recipient.
+- name: Transfers
+  description: Rest endpoints for initiating transfers.
+- name: Batches
+  description: Rest endpoints for managing batches.
+- name: PurchaseOrders
+  description: Rest endpoint for purchase order creation for organizations
+paths:
+  /api/v1/transaction/organization/{organizationId}/company/{companyId}:
+    put:
+      tags:
+      - Transactions
+      summary: Update info about a single transaction.
+      operationId: updateTransaction
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRecipientTransactionRequest'
+        required: true
+      responses:
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionResponse'
+        "200":
+          description: Record updated.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionResponse'
+        "400":
+          description: Invalid request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionResponse'
+  /api/v1/batch/organization/{organizationId}/company/{companyId}/approve:
+    put:
+      tags:
+      - Batches
+      summary: Update status of batch to APPROVED.
+      operationId: approveBatch
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveBatchRequest'
+        required: true
+      responses:
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+        "200":
+          description: Record updated.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+        "400":
+          description: Invalid request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+  /api/v1/transfer/organization/{organizationId}/company/{companyId}/batch:
+    post:
+      tags:
+      - Transfers
+      operationId: initiateTransactionBatch
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateTransactionBatchRequest'
+        required: true
+      responses:
+        "202":
+          description: Accepted
+  /api/v1/recipient/organization/{organizationId}:
+    get:
+      tags:
+      - Recipients
+      summary: Retrieves recipient details.
+      operationId: getRecipient
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: walletAddress
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Details about the recipient.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+        "403":
+          description: Invalid organizationId.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+        "404":
+          description: Recipient not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+        "400":
+          description: Invalid email or missing both search criteria (email and walletAddress).
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+    post:
+      tags:
+      - Recipients
+      summary: Onboard a new recipient to the organization.
+      operationId: createRecipient
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRecipientRequest'
+        required: true
+      responses:
+        "403":
+          description: Invalid organizationId.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+        "201":
+          description: Participant created.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+        "400":
+          description: Invalid request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientResponse'
+    delete:
+      tags:
+      - Recipients
+      summary: Unassociate recipient from organization.
+      operationId: unassociateRecipient
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: walletAddress
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: Invalid organizationId.
+        "204":
+          description: Participant unassociated.
+        "400":
+          description: Invalid email or missing both search criteria (email and walletAddress).
+  /api/v1/recipient/organization/{organizationId}/upload:
+    post:
+      tags:
+      - Recipients
+      summary: Onboard new recipients from a CSV file
+      operationId: loadRecipients
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "403":
+          description: Invalid organizationId.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipientResponse'
+        "201":
+          description: Participant created.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipientResponse'
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipientResponse'
+  /api/v1/batch/organization/{organizationId}/company/{companyId}:
+    get:
+      tags:
+      - Batches
+      summary: Retrieves all batches for given company.
+      operationId: getBatches
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientTransactionBatchResponse'
+        "200":
+          description: Details about batches.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientTransactionBatchResponse'
+    post:
+      tags:
+      - Batches
+      summary: Load a new batch of transactions.
+      operationId: createTransactionBatch
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRecipientTransactionBatchRequest'
+        required: true
+      responses:
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+        "201":
+          description: Details about created batch.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+    delete:
+      tags:
+      - Batches
+      summary: Delete all unprocessed transactions for participants in the batch.
+      operationId: removeUnprocessedTransactions
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: batchUuid
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: walletAddress
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Records removed.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          description: Invalid email or missing both search criteria (email and walletAddress).
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+  /api/v1/batch/organization/{organizationId}/company/{companyId}/upload:
+    post:
+      tags:
+      - Batches
+      summary: Load a new batch of transactions from a CSV file
+      operationId: loadTransactions
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                request:
+                  $ref: '#/components/schemas/CreateEmptyTransactionBatchRequest'
+                file:
+                  type: string
+                  format: binary
+          application/json:
+            schema:
+              type: object
+              properties:
+                request:
+                  $ref: '#/components/schemas/CreateEmptyTransactionBatchRequest'
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Created batch.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+        "403":
+          description: Invalid organization or company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+  /api/v1/batch/organization/{organizationId}/company/{companyId}/batch/uuid/{batchUuid}/recreate:
+    post:
+      tags:
+      - Batches
+      summary: Create a new batch using failed transactions from an existing batch
+      operationId: recreateTransactionBatch
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: batchUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmptyTransactionBatchRequest'
+        required: true
+      responses:
+        "201":
+          description: Created batch.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+  /api/ext/v1/orgs/{org_id}/webhook/subscriptions:
+    get:
+      tags:
+      - WebHookSubscription
+      summary: Get WebHook subscriptions
+      operationId: getWebHookSubscriptions
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageWebHookSubscriptionDto'
+    post:
+      tags:
+      - WebHookSubscription
+      summary: Register WebHook subscription
+      operationId: registerWebHookSubscription
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterWebHookSubscriptionRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/WebHookSubscriptionDto'
+  /api/ext/v1/orgs/{org_id}/orders:
+    post:
+      tags:
+      - PurchaseOrders
+      summary: Creates a new purchase order
+      description: To create a new purchase order, you need to specify the amount in fiat, the currency and the account_id where the assets will be transfer to once the order is completed.
+      operationId: createOrder
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePurchaseOrderRequest'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderResponse'
+  /api/v1/transaction/organization/{organizationId}/company/{companyId}/all:
+    get:
+      tags:
+      - Transactions
+      summary: Retrieves a paginated response of all transactions for organization.
+      operationId: getTransactions
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Details about transactions.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientTransactionResponse'
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientTransactionResponse'
+  /api/v1/recipient/organization/{organizationId}/details/of:
+    get:
+      tags:
+      - Recipients
+      summary: Retrieves details from recipient email list
+      operationId: getRecipients
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: emails
+        in: query
+        required: true
+        schema:
+          maxItems: 100
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: Invalid organizationId.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipientResponse'
+        "400":
+          description: Invalid emails
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipientResponse'
+        "200":
+          description: Details about the recipients into the list
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipientResponse'
+  /api/v1/recipient/organization/{organizationId}/csv:
+    get:
+      tags:
+      - Recipients
+      operationId: exportRecipientsToCsv
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - CREATED
+          - INVITATION_SENT
+          - ACCEPTED
+          - DECLINED
+      - name: columns
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - EMAIL
+            - WALLET_ADDRESS
+            - STATUS
+            - CREATED_AT
+            - INVITATION_DATE
+            - UPDATED_AT
+            - LAST_TRANSACTION_DATE
+            - PHONE
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/recipient/organization/{organizationId}/all:
+    get:
+      tags:
+      - Recipients
+      summary: Retrieves a paginated response of recipients for organization filtered
+        by status. If a status is not sent all recipients are returned.
+      operationId: getRecipients_1
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - CREATED
+          - INVITATION_SENT
+          - ACCEPTED
+          - DECLINED
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: EMAIL
+          enum:
+          - EMAIL
+          - CREATED_DATE
+          - INVITATION_DATE
+          - UPDATED_AT
+          - LAST_TRANSACTION_DATE
+      - name: direction
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ASC
+          enum:
+          - DESC
+          - ASC
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A paginated list of all recipients.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientResponse'
+        "403":
+          description: Invalid organizationId.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientResponse'
+  /api/v1/batch/organization/{organizationId}/company/{companyId}/batch/uuid/{batchUuid}:
+    get:
+      tags:
+      - Batches
+      summary: Retrieves all transactions based on the batchUuid.
+      operationId: getBatchTransactions
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: batchUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Details about transactions.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientTransactionResponse'
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRecipientTransactionResponse'
+    delete:
+      tags:
+      - Batches
+      summary: Delete a transaction batch that is in an unprocessed state.
+      operationId: removeTransactionBatch
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: batchUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Record removed.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+        "404":
+          description: Batch not found.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          description: Some transactions in processed state.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+  /api/v1/batch/organization/{organizationId}/company/{companyId}/batch/uuid/{batchUuid}/export:
+    get:
+      tags:
+      - Batches
+      summary: Export a CSV with all transaction into a batch.
+      operationId: export
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: batchUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: Invalid organization or company.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+        "200":
+          description: CSV file with information of transactions into a batch.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+  /api/v1/batch/organization/{organizationId}/company/{companyId}/batch/uuid/{batchUuid}/details:
+    get:
+      tags:
+      - Batches
+      summary: Get details of a batch based on the batchUuid.
+      operationId: getBatchDetails
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: batchUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Details about batch.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchDetailsResponse'
+        "403":
+          description: Invalid organization or company.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecipientTransactionBatchDetailsResponse'
+  /api/ext/v1/transactions/{referenceId}:
+    get:
+      tags:
+      - Order Transactions
+      summary: Get Transaction Details.
+      operationId: createTransactionBatch_1
+      parameters:
+      - name: referenceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TransactionOrder'
+  /api/v1/transaction/organization/{organizationId}/company/{companyId}/uuid/{transactionUuid}:
+    delete:
+      tags:
+      - Transactions
+      summary: Delete a transaction that is in an unprocessed state.
+      operationId: removeTransaction
+      parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: transactionUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Record removed.
+        "403":
+          description: Invalid organization or company.
+        "400":
+          description: Transaction in processed state.
+        "404":
+          description: Transaction not found.
+  /api/ext/v1/orgs/{org_id}/webhook/subscriptions/{webhook_id}:
+    delete:
+      tags:
+      - WebHookSubscription
+      summary: Remove WebHook subscription
+      operationId: removeWebHookSubscription
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    UpdateRecipientTransactionRequest:
+      required:
+      - amount
+      - transactionUuid
+      type: object
+      properties:
+        transactionUuid:
+          type: string
+        amount:
+          minimum: 0.0
+          exclusiveMinimum: true
+          type: number
+        currency:
+          type: string
+    RecipientTransactionResponse:
+      type: object
+      properties:
+        transactionUuid:
+          type: string
+        companyId:
+          type: string
+        batchUuid:
+          type: string
+        batchName:
+          type: string
+        email:
+          type: string
+        walletAddress:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        purpose:
+          type: string
+          enum:
+          - GIFT
+          - REMITTANCE
+          - PAYMENT
+        status:
+          type: string
+          enum:
+          - CREATED
+          - DONE
+          - FAILED
+        createdDate:
+          type: string
+          format: date-time
+        batchStatus:
+          type: string
+        approverEmail:
+          type: string
+        transferInitiatedDate:
+          type: string
+          format: date-time
+    ApproveBatchRequest:
+      required:
+      - approverEmail
+      - approverFirstName
+      - approverLastName
+      - batchUuid
+      type: object
+      properties:
+        batchUuid:
+          type: string
+        approverEmail:
+          type: string
+        approverFirstName:
+          type: string
+        approverLastName:
+          type: string
+    RecipientTransactionBatchResponse:
+      type: object
+      properties:
+        batchUuid:
+          type: string
+        batchName:
+          type: string
+        companyId:
+          type: string
+        companyName:
+          type: string
+        batchStatus:
+          type: string
+          enum:
+          - PENDING
+          - APPROVED
+          - IN_PROGRESS
+          - SUCCEEDED
+          - FAILED
+          - PARTIALLY_FAILED
+        approverEmail:
+          type: string
+        approverFirstName:
+          type: string
+        approverLastName:
+          type: string
+        creatorEmail:
+          type: string
+        creatorFirstName:
+          type: string
+        creatorLastName:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        approvedDate:
+          type: string
+          format: date-time
+        totalTransactions:
+          type: integer
+          format: int32
+    InitiateTransactionBatchRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        batchUuid:
+          type: string
+        accountId:
+          type: string
+        signerKey:
+          type: string
+    CreateRecipientRequest:
+      required:
+      - email
+      - organizationName
+      type: object
+      properties:
+        email:
+          type: string
+        organizationName:
+          type: string
+    RecipientResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        walletAddress:
+          type: string
+        status:
+          type: string
+          enum:
+          - CREATED
+          - INVITATION_SENT
+          - ACCEPTED
+          - DECLINED
+        createdDate:
+          type: string
+          format: date-time
+        invitationDate:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        lastTransactionDate:
+          type: string
+          format: date-time
+    CreateRecipientTransactionBatchRequest:
+      required:
+      - batchName
+      - creatorFirstName
+      - creatorLastName
+      - transactions
+      type: object
+      properties:
+        batchName:
+          type: string
+        creatorEmail:
+          type: string
+        creatorFirstName:
+          type: string
+        creatorLastName:
+          type: string
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateRecipientTransactionRequest'
+    CreateRecipientTransactionRequest:
+      required:
+      - amount
+      - currency
+      - purpose
+      type: object
+      properties:
+        email:
+          type: string
+        walletAddress:
+          pattern: "^0x[0-9a-fA-F]{40}$"
+          type: string
+        amount:
+          minimum: 0.0
+          exclusiveMinimum: true
+          type: number
+        currency:
+          type: string
+        purpose:
+          type: string
+          enum:
+          - GIFT
+          - REMITTANCE
+          - PAYMENT
+    CreateEmptyTransactionBatchRequest:
+      required:
+      - batchName
+      - creatorFirstName
+      - creatorLastName
+      type: object
+      properties:
+        batchName:
+          type: string
+        creatorEmail:
+          type: string
+        creatorFirstName:
+          type: string
+        creatorLastName:
+          type: string
+    RegisterWebHookSubscriptionRequest:
+      required:
+      - url
+      type: object
+      properties:
+        url:
+          type: string
+    WebHookSubscriptionDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        referenceName:
+          type: string
+        url:
+          type: string
+    CreatePurchaseOrderRequest:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - EUR
+          - XGC
+          - PLN
+          - PEN
+        fiatAmount:
+          type: number
+        accountId:
+          type: string
+    PurchaseOrderAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        walletAddress:
+          type: string
+        bankAccount:
+          $ref: '#/components/schemas/PurchaseOrderBankAccount'
+    PurchaseOrderBankAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        sppId:
+          type: string
+    PurchaseOrderCompany:
+      type: object
+      properties:
+        id:
+          type: string
+        account:
+          $ref: '#/components/schemas/PurchaseOrderAccount'
+        jurisdiction:
+          $ref: '#/components/schemas/PurchaseOrderJurisdiction'
+    PurchaseOrderJurisdiction:
+      type: object
+      properties:
+        id:
+          type: string
+        walletAddress:
+          type: string
+    PurchaseOrderOrganization:
+      type: object
+      properties:
+        id:
+          type: string
+        walletAddress:
+          type: string
+        company:
+          $ref: '#/components/schemas/PurchaseOrderCompany'
+    PurchaseOrderQuote:
+      type: object
+      properties:
+        id:
+          type: string
+        goldPrice:
+          type: number
+        goldAmount:
+          type: number
+        totalCost:
+          type: number
+        subTotal:
+          type: number
+        exchangeRate:
+          type: number
+        method:
+          type: string
+    PurchaseOrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        referenceId:
+          type: string
+        correlationId:
+          type: string
+        quote:
+          $ref: '#/components/schemas/PurchaseOrderQuote'
+        organization:
+          $ref: '#/components/schemas/PurchaseOrderOrganization'
+    PageRecipientTransactionResponse:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipientTransactionResponse'
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    Pageable:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        offset:
+          type: integer
+          format: int64
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+    Sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+    PageRecipientResponse:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipientResponse'
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    PageRecipientTransactionBatchResponse:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipientTransactionBatchResponse'
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    RecipientTransactionBatchDetailsResponse:
+      type: object
+      properties:
+        batchUuid:
+          type: string
+        batchName:
+          type: string
+        companyId:
+          type: string
+        batchStatus:
+          type: string
+          enum:
+          - PENDING
+          - APPROVED
+          - IN_PROGRESS
+          - SUCCEEDED
+          - FAILED
+          - PARTIALLY_FAILED
+        approverEmail:
+          type: string
+        approverFirstName:
+          type: string
+        approverLastName:
+          type: string
+        creatorEmail:
+          type: string
+        creatorFirstName:
+          type: string
+        creatorLastName:
+          type: string
+        createdDate:
+          type: string
+          format: date-time
+        approvedDate:
+          type: string
+          format: date-time
+        currency:
+          type: string
+        totalTransactions:
+          type: integer
+          format: int32
+        totalAmount:
+          type: number
+        failedTransactions:
+          type: integer
+          format: int64
+        totalFailedAmount:
+          type: number
+        succeededTransactions:
+          type: integer
+          format: int64
+        totalSucceededAmountInFiat:
+          type: number
+        totalSucceededAmountInXGC:
+          type: number
+    TransactionOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - BUY
+          - SELL
+          - TRANSFER
+          - PHYSICAL_REDEMPTION
+          - UNKNOWN
+        referenceId:
+          type: string
+        status:
+          type: string
+          enum:
+          - REJECTED
+          - WAITING_APPROVAL
+          - ACTION_DECLINED
+          - APPROVED
+          - PENDING
+          - CONFIRMED_TRANSFER
+          - ORCHESTRATION_TRANSFER_TO_LIVE_WALLET
+          - COMPLETED
+          - FAILED
+          - BLOCKCHAIN_FAILED
+          - EXPIRED
+          - WAITING_WIRE_TRANSFER
+          - PAYOUT_DECISION_PENDING
+          - PAYOUT_FAILED
+          - PAYOUT_ACCEPTED
+          - PAYOUT_REJECTED
+          - PAYOUT_REFUND_PENDING
+          - PAYOUT_REFUNDED
+          - PAYIN_CHARGE_PENDING
+          - PAYIN_CHARGED
+          - PAYIN_FAILED
+          - PAYIN_REFUND_PENDING
+          - PAYIN_REJECTED
+          - PAYIN_REFUNDED
+          - MANUAL_REVIEW_ACCEPTED
+          - ON_HOLD
+          - CREATING_TRANSACTION_FAILED
+          - CHARGED_BACK
+          - CHARGEBACK_PENDING
+          - CHARGEBACK_REVERSED
+          - CANCELLED
+          - FAILED_SELL_ORDER_REFUNDED
+          - UNKNOWN
+        fiatCurrency:
+          type: string
+          enum:
+          - USD
+          - EUR
+          - XGC
+          - PLN
+          - PEN
+        fiatAmount:
+          type: number
+        assetAmount:
+          type: number
+        rate:
+          type: number
+        price:
+          type: number
+    PageWebHookSubscriptionDto:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebHookSubscriptionDto'
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean

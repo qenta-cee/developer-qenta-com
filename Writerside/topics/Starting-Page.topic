@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Starting Page" id="Starting-Page">
+
+    <section-starting-page>
+        <title>ProWallet</title>
+        <description>
+            Add an introductory paragraph: explain what this section is about in 2-3 short sentences.
+        </description>
+
+        <!--    Add up to 2 topics that you want to promote. Use the "type" attribute to select an icon.    -->
+        <spotlight>
+            <a href="AboutProWallet.md" type="world" summary="Get an overview about ProWallet ecosystem">Overview</a>
+            <a href="https://app.qenta.com/" summary="Meet our B2B and B2C platforms" type="cross-platform">User products</a>
+        </spotlight>
+
+        <!--    Add several topics that are most important for this section.    -->
+        <primary>
+            <title>Our integration mechanisms</title>
+            <a href="REST-APIs.md"/>
+            <a href="SDK-and-tools.md"/>
+        </primary>
+
+        <secondary>
+            <title>Topics</title>
+            <a href="Authentication.md"></a>
+            <a href="Webhook-management.md"></a>
+        </secondary>
+
+    </section-starting-page>
+
+</topic>

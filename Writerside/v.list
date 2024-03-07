@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE vars SYSTEM "https://resources.jetbrains.com/writerside/1.0/vars.dtd">
+<vars>
+    <var name="product" value="Writerside"/>
+    <var name="product_name" value="Qenta Mass" />
+    <var name="prowallet_name" value="ProWallet Console" />
+    <var name="prowallet_url" value="https://prowallet.gcoin.com"/>
+    <var name="test_env_name" value="Sandbox" />
+    <var name="prod_env_name" value="Production"/>
+    <var name="test_env_base_url" value="https://api.dev.gmint.io"/>
+    <var name="prod_env_base_url" value="https://api.gcoin.com"/>
+    <var name="asset_name" value="GCoin"/>
+</vars>
