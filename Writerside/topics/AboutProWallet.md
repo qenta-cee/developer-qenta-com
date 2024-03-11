@@ -23,7 +23,8 @@ Most of the features from Qenta can be performed through our comprehensive RESTf
 Utilizing standard HTTP protocols, our RESTful API empowers developers to effortlessly access and leverage Qenta's functionality, facilitating smooth communication and streamlined workflows for your applications. <a href="REST-APIs.md">See more</a>
 </tab>
 <tab title="SDK and Tools">
-The Qenta SDK for Java enhances the integration of Qenta Services by offering a comprehensive suite of libraries specifically designed to be intuitive and user-friendly for developers. <br/> For non-Java based application, it possible to run a lightweight proxy server that exposes all SDK methods as a RESTful API. <a href="SDK-and-tools.md">See more</a>
+Effortlessly integrate %product_name% services into your projects with our SDK and Tools. <br/>
+Our toolkit enhances the integration of %product_name% by offering a comprehensive suite of libraries specifically designed to be intuitive and user-friendly for developers.<a href="SDK-and-tools.md">See more</a>
 </tab>
 <tab title="Events notifications">
 Stay seamlessly informed about updates on your transactions through our notification tools. Our WebHooks empowers you to effortlessly integrate and leverage real-time transaction updates, ensuring you are always in the know. <a href="Webhook-management.md">See more</a>
