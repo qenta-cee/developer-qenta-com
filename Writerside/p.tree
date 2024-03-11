@@ -15,6 +15,6 @@
     </toc-element>
     <toc-element topic="SDK-and-tools.md">
         <toc-element topic="Java-SDK.md"/>
-        <toc-element topic="Proxy-Server.md"/>
+        <toc-element topic="Docker-Support.md"/>
     </toc-element>
 </instance-profile>
