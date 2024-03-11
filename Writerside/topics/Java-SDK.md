@@ -97,9 +97,9 @@ public QentaConfigurationProvider configurationProvider() {
 </tabs>
 
 
-> You can consult the <a href="SDK-and-tools.md">previous topic</a> to get the configuration JSON file from the %prowallet_name%.
->
-{style="note"}
+<note>
+You can consult the <a href="SDK-and-tools.md">previous topic</a> to get the configuration JSON file from the %prowallet_name%.
+</note>
 
 ## Usage
 

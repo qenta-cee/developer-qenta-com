@@ -1,8 +1,7 @@
 # Docker support
 
-**%product_name%** for non-Java based application, it possible to run a lightweight proxy server that exposes all SDK methods as
-a
-RESTful API with JSON payloads to use SDK methods using a standard HTTP connection.
+**%product_name%** for non-Java based application, it possible to run a lightweight server that exposes all SDK methods as
+a RESTful API with JSON payloads to use SDK methods using a standard HTTP connection.
 
 ```plantuml
 @startuml
@@ -35,74 +34,57 @@ SDK .right.> [API Gateway]
 
 ```
 
-## Qenta SDK Server Manual Integration
+## Running the docker image
 
 
-## Deploying Qenta Proxy server with Docker on Windows Server 2016
-
-> **BEFORE YOU START**
->
-> Make sure you have Docker Installed.
->
-{style="warning"}
-
-<procedure title="Installation" id="installation">
-    <step>
-        <p>Pull the Docker image</p>
-        <list>
-        <li> <p>Execute the following command:</p>
-            <code>docker pull public.ecr.aws/f5d3l7y2/qenta-sdk-server:&lt;image_tag&gt;\</code>
-        </li>
-        <li> <p>Use the following command to tag the image in Docker:</p>
-            <code>docker tag public.ecr.aws/f5d3l7y2/qenta-sdk-server:&lt;image_tag&gt;\ qenta-sdk-server:latest</code>
-        </li>
-        </list>
-    <list>
-    </list>
-    </step>
-    <step>
-        <p>Run the container:</p>
-        <code-block>
-            docker run -d -p 8080:8081
-            -e SDK_CONFIGURATION_SOURCE_TYPE=ENVIRONMENT_VARIABLE \
-            -e ENVIRONMENT_CONFIG_URL=https://hxklzo87t9.execute-api.us-east2.amazonaws.com/config/development \
-            -e QENTA_ACCESS_TOKEN=  &lt;your_access_token&gt;\
-            -e QENTA_ENVIRONMENT=dev \
-            -e QENTA_ORGANIZATION_ID= &lt;your_organization_id&gt;\
-            -e QENTA_PRIVATE_KEY= &lt;your_private_key&gt;\
-            -e QENTA_USER_ID= &lt;your_user_id&gt;\
-            qenta-sdk-server:latest
-        </code-block>
-    </step>
+<procedure title="Running server image" type="steps">
+<tip>
+<b>Before to start</b>
+<p>Make sure you have a <code>docker</code> based runtime installed in your environment.</p>
+</tip>
+<step>
+Pull the docker image from the Qenta repository.
+<code-block ignore-vars="false" lang="shell">
+docker pull %sdk_docker_image_uri%:%sdk_docker_image_tag%
+</code-block>
+</step>
+<step>
+<b>Optional: </b> If you want to use a shorter name for the image, you can tag it with a different name.
+<code-block ignore-vars="false" lang="shell">
+docker tag %sdk_docker_image_uri%:%sdk_docker_image_tag% qenta-sdk-server:latest
+</code-block>
+</step>
+<step>
+Once you have the image, you can run the server with the following command.
+<code-block lang="shell" ignore-vars="false">
+docker run -d -p 8080:8081 -e SDK_CONFIGURATION_SOURCE_TYPE=ENVIRONMENT_VARIABLE \
+-e ENVIRONMENT_CONFIG_URL=https://hxklzo87t9.execute-api.us-east2.amazonaws.com/config/development \
+-e QENTA_ACCESS_TOKEN=  your_access_token\
+-e QENTA_ENVIRONMENT=SANDBOX \
+-e QENTA_ORGANIZATION_ID= your_organization_id\
+-e QENTA_PRIVATE_KEY= your_private_key\
+-e QENTA_USER_ID= your_user_id\
+qenta-sdk-server:latest
+</code-block>
+</step>
+<note>
+You can consult the <a href="SDK-and-tools.md">SDK and Tools topic</a> to get the configuration values from the %prowallet_name%.
+</note>
 </procedure>
 
-## Access the server
+## Using the server
 
-To verify the server is up and running, In the address bar, enter the URL where the Spring server is configured to run.
-If not specified in your configuration, a common default URL is:
+To verify the server is running, you can perform a `GET` request to the server at port `8080` or the port you have configured set in the running command.
 
-<a href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a>
+```shell
+curl --location --request GET "http://localhost:8080/v3/api-docs" 
+```
 
-Make sure to set the correct port number in case you used the --server.port=custom_port_number or docker run in
-a different port.
+Once you verified the server is running, you can use the SDK methods using a standard HTTP connection.
 
+Following is an example of how to create an order using the server.
 
-## Confirming Server Availability
-
-If the server is running and accessible, Swagger UI will load, displaying a user-friendly interface for exploring and
-testing your API endpoints.
-Navigate through the available API documentation to understand the available endpoints, request/response
-formats, and any additional information provided.
-
-![Swagger](swagger.png){ style="block" thumbnail="true"}
-
-## Test the server
-
-You can use curl to test the `REST API` endpoints of your Proxy Server. Here's an example using the provided curl
-command:
-
-
-```bash
+```shell
 curl --location --request POST "http://localhost:8080/qenta-sdk/orders" ^
 --header "Content-Type: application/json" ^
 --header "Accept: */*" ^
@@ -110,18 +92,3 @@ curl --location --request POST "http://localhost:8080/qenta-sdk/orders" ^
 --header "Connection: keep-alive" ^
 --data-raw "{ \"currency\" : \"EUR\", \"fiatAmount\" : 120.0, \"accountId\" : \"3213\"}"
 ```
-
-<p>This curl command performs a POST request to the specified URL <code>(http://localhost:8080/qenta-sdk/orders)</code> with a
-<code>JSON</code> payload</p>
-
-<tabs>
-    <tab title="Response Confirmation">
-        After executing the curl command, you should receive an HTTP response. A successful request returns a 200 OK
-status.
-    </tab>
-    <tab title="Example HTTP Response ">
-        <p>Below is an example screenshot from a REST client showing a successful 200 OK HTTP response after executing the
-        curl command.</p>
-    </tab>
-</tabs>
-
