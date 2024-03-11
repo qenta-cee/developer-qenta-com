@@ -10,4 +10,6 @@
     <var name="test_env_base_url" value="https://api.dev.gmint.io"/>
     <var name="prod_env_base_url" value="https://api.gcoin.com"/>
     <var name="asset_name" value="GCoin"/>
+    <var name="sdk_docker_image_uri" value="public.ecr.aws/f5d3l7y2/qenta-sdk-server"/>
+    <var name="sdk_docker_image_tag" value="latest"/>
 </vars>

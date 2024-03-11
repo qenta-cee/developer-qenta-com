@@ -38,6 +38,6 @@ In the <code>SDK Settings</code> home screen you wil be able to see the followin
 <step>
 ProWallet will require you user secret before to allow see or copy the <code>Private key</code> value.
 <img src="ProWallet_SDK_Settings_GetPrivateKey.png" alt="Get private key"/>
-<warning>Private key is used to sign each transaction, avoid share it</warning>
+<warning>Private key is used to sign each transaction, avoid to share it</warning>
 </step>
 </procedure>
