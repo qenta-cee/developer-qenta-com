@@ -1,4 +1,4 @@
-# Proxy Server
+# Docker support
 
 **%product_name%** for non-Java based application, it possible to run a lightweight proxy server that exposes all SDK methods as
 a
