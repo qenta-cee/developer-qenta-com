@@ -1,17 +1,77 @@
 # About ProWallet
 
-Global payout orchestration tool for enterprise-level customers is based on digital assets and fiat, to disburse salaries, vendor payments, refunds, and other type of payments to a large number of beneficiaries simultaneously, ensuring they get to receive the value in their preferred way.
+Qenta ProWallet it's a platform that offers financial services to small and medium businesses based but not limited to multiple digital assets like G-Coin®.
 
-## The Global Payout Platform
+G-Coin® is a digital title of ownership to physical ESG-compliant gold bars (Responsible Gold™). G-Coins are stored on a secure, private blockchain ledger and have settlement capabilities on public blockchains.
 
-| **Value Proposition**| **Audience**| **Differentiation**|
-|---------------------|-------------|----------------------|
-| **What problem does the product solve?**<br/> Cross border transfers that simplify the complexity associated with international transactions. Also facilitate the efficient and secure distribution of funds from a single source to multiple recipients. | **What is the target audience?**<br/> This tool is commonly used by small and medium businesses, and enterprise customers. | **How is the product differentiated vs other offerings in the market?**<br/> Do we have better features, pricing, other? We offer a stable digital asset and an interesting combination of legacy and modern rails (ACH, SWIFT, PayPal, and Payoneer). Internally, this can grow into an opportunity to integrate all of the Qenta pieces to create a differentiated offering. |
+The ProWallet empowers organizations to manage their tokenized assets seamlessly across subsidiaries and global locations.
 
+* It functions as a corporate wallet with multi-tier signatory capabilities​
+
+* Designed to accommodate corporate treasury rules & thresholds ​
+
+* 24/7 global access ​
+
+* Engineered on QOS, our proprietary Blockchain, ensuring cost-efficient on-chain transactions with a capacity exceeding 10,000 transactions per second
+
+
+## Value Proposition*
+
+* Qenta prowallet platform addresses the following problems:
+
+* Lack of Financial Services for SMBs: Many small and medium-sized businesses struggle to access comprehensive financial tools tailored to their needs.
+
+* Global Payments: The need for businesses to make payments across different regions and currencies can be complex and costly.
+
+* Treasury Management: Efficiently managing and optimizing a company's liquidity, making sound financial investments, and managing risks associated with liquidity can be challenging.
+
+* Asset Management: With the rise of digital assets, businesses require a platform to manage these assets securely and efficiently.
+
+* Decentralized Transactions: For companies dealing with digital assets, achieving a high transaction rate while maintaining cost efficiency is crucial.
+
+* Security and Control: Ensuring secure management of funds and assets while having a hierarchical structure for transaction approvals (multi-tier signatory capabilities).
+
+* Compliance with Corporate Treasury Rules: Aligning financial operations with corporate rules and thresholds can be cumbersome without the right tools.
+
+* Accessibility: Businesses needs constant access to their financial tools, regardless of time or location.
+
+## Target Audience*
+
+* For whom does the platform solve these problems?
+
+* Small and Medium-sized Businesses (SMBs): These businesses often lack the resources or access to comprehensive financial tools. Qenta Prowallet is tailored to meet their diverse needs, especially those dealing with digital assets.
+
+* Subsidiaries & Multinational Corporations: Companies with multiple branches or global operations can benefit from seamless management of tokenized assets across different locations.
+
+* Merchants: For those engaged in sales, the POS feature simplifies transactions and offers flexibility in payment methods, including digital assets.
+
+* Organizations Dealing with Digital Assets: Given its focus on tokenized assets and a proprietary Blockchain, any organization that deals with or is interested in digital assets can benefit from this platform.
 
 ## Features
 
-Global payout engine provides a set of functionalities for developers to integrate secure and efficient payment disbursement capabilities into their applications. The API and SDK focus on recipients management and transaction orchestration, which enable users to initiate, process, and track payment disbursements to recipients.
+### Corporate Treasury Management
+The platform adds an additional layer of security by using MFA mechanisms to authorize each transaction.​
+
+Our system provides reports in real time so you can have an overview of your activity. ​
+
+Allows organizations to manage their assets across subsidiaries and geographies.​
+
+Designed to accommodate corporate treasury rules & thresholds.​
+
+Managing entities and recipients: Allows an organization to manage its balance and distribute it through different entities​
+
+#### Buy, sell and transfer digital assets​
+
+Provides a variety of payment methods that customers know and trust: ACH, Swift transfers, and relevant global payment paywalls.​
+
+Full transaction history and Dashboard.​
+
+Multi-tier signatories (Approval process flow): Allows setting several tiers for operations authorizing (signature) depending on transaction amount and user permissions.​
+
+![buy-sell-transfer.png](buy-sell-transfer.png)
+
+### Payments Disbursement System​
+Designed to facilitate the efficient and secure distribution of funds from a single source (organization) to multiple recipients. This system is commonly used by businesses, and organizations to disburse salaries, vendor payments, refunds, incentives, and other forms of payments to a large number of beneficiaries simultaneously. Individual and Mass Transfer Services:     Recipients' management and massive transaction modules ensure an E2E seamless customer experience from B2B to B2C​.
 
 ## Integration capabilities
 
