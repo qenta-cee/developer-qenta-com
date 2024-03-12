@@ -20,5 +20,4 @@
     <toc-element topic="Webhooks.md">
         <toc-element topic="Webhook-events.md"/>
     </toc-element>
-    <toc-element topic="Snippets.topic" hidden="true"/>
 </instance-profile>
