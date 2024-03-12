@@ -27,6 +27,6 @@ Effortlessly integrate %product_name% services into your projects with our SDK a
 Our toolkit enhances the integration of %product_name% by offering a comprehensive suite of libraries specifically designed to be intuitive and user-friendly for developers.<a href="SDK-and-tools.md">See more</a>
 </tab>
 <tab title="Events notifications">
-Stay seamlessly informed about updates on your transactions through our notification tools. Our WebHooks empowers you to effortlessly integrate and leverage real-time transaction updates, ensuring you are always in the know. <a href="Webhook-management.md">See more</a>
+Stay seamlessly informed about updates on your transactions through our notification tools. Our WebHooks empowers you to effortlessly integrate and leverage real-time transaction updates, ensuring you are always in the know. <a href="Webhooks.md">See more</a>
 </tab>
 </tabs>
