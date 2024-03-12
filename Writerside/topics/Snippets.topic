@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Snippets" id="Snippets" is-library="true">
+
+    <snippet id="order_event_sample">
+        <code-block lang="json" collapsible="true">
+            {
+                "event": "orders.status",
+                "id" : "e1a3b4c5-6d7e-8f9a-0b1c-2d3e4f5a6b7c",
+                "payload": {
+                    "order": {
+                    "referenceId": "G1446845368",
+                    "currentStatus": "CHARGE_PENDING"
+                    }
+                }
+            }
+        </code-block>
+    </snippet>
+</topic>
