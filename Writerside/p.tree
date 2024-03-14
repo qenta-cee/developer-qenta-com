@@ -8,6 +8,7 @@
 
     <toc-element topic="Starting-Page.topic"/>
     <toc-element topic="AboutProWallet.md">
+        <toc-element topic="Treasury-Management.md"/>
         <toc-element topic="Mass-Transfers.md"/>
     </toc-element>
     <toc-element topic="REST-APIs.md">

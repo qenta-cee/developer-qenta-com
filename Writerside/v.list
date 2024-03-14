@@ -7,7 +7,7 @@
     <var name="prowallet_url" value="https://prowallet.gcoin.com"/>
     <var name="test_env_name" value="Sandbox" />
     <var name="prod_env_name" value="Production"/>
-    <var name="test_env_base_url" value="https://api.dev.gmint.io"/>
+    <var name="test_env_base_url" value="https://api.stage.gmint.co"/>
     <var name="prod_env_base_url" value="https://api.gcoin.com"/>
     <var name="asset_name" value="GCoin"/>
     <var name="sdk_docker_image_uri" value="public.ecr.aws/f5d3l7y2/qenta-sdk-server"/>

@@ -1,59 +1,5 @@
 # Mass Transfers
 
-```plantuml
-@startuml
-
-!theme _none_
-left to right direction
-scale max 800 width
-skinparam packageStyle rect
-skinparam actorStyle awesome
-
-actor Recipient as R <<Recipient>>
-
-rectangle "Organization" <<Company>> {
-    actor OrgUser as OU
-    rectangle System as S <<System>> {
-        rectangle SDK as SDK
-    }
-}
-
-rectangle "Qenta" {
-
-    package "Qenta App" {
-        usecase "Query balance" as UC1
-        usecase "Query transactions" as UC2
-        usecase "Cash out" as UC3
-    }
-    
-    package "ProWallet Console" {
-        usecase "Manage recipients" as UC4
-        usecase "Manage payment batches" as UC5
-        usecase "Approve & process batch" as UC6
-    }
-    
-    package "Qenta API" {
-        usecase "Manage recipients" as UC7
-        usecase "Manage payment batches" as UC8
-        usecase "Approve & process batch" as UC9
-    }
-}
-
-R ..> UC1
-R ..> UC2
-R ..> UC3
-
-UC7 <.. S
-UC8 <.. S
-UC9 <.. S
-
-UC4 <.. OU
-UC5 <.. OU
-UC6 <.. OU
-
-@enduml
-```
-
 
 ## Reference architecture
 
@@ -126,9 +72,9 @@ start
     :Onboard recipient;
 |Recipient|
     if (Already user?) then (yes)
-        :Info notification;
+        :Notify subscription;
     else (no)
-        :Create recipient;
+        :Send invitation;
     endif
 stop
 
