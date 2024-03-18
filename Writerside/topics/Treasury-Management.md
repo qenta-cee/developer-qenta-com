@@ -5,63 +5,77 @@
 ```plantuml
 @startuml
 
-scale max 800 width
+scale max 870 width
 skinparam actorStyle awesome
-
 
 rectangle "Organization" <<Company>> {
     component "System" {
-        [SDK]
+        [SDK] #orange
     }
     actor "Organization User" as OU
 }
 
-package "ProWallet ecosystem" {
+rectangle "Qenta ecosystem" {
+
     interface "HTTP" as HTTP
     HTTP -down- [API Gateway]
     
-    rectangle "User interface" {
-        [ProWallet Console]
+    rectangle "ProWallet ecosystem" {
+
+
+        rectangle "User interface" {
+            [ProWallet Console] #orange
+        }
+
+        component "Mass transfer engine" as engine {
+            [Recipients service]
+            [Batch service]
+        }
+
+
     }
-    
-    component "Core services" as engine {
-        [Transfer service]
-        [Orders service]
-        [Pricing service]
-        [Payment service]
+
+    rectangle "Qenta Payments" {
+        [EMConnect]
+        [Qenta CEE]
     }
-    
+
+    component "Core services" as core {
+            [Pricing service] #orange
+            [Notification service]
+            [Payment service] #orange
+            [Orders service] #orange
+            [Transfer service] #orange
+        }
+
     component "QoS" as BC <<Blockchain>> {
         [Wallets]
         [Contracts]
     }
-    
+
 }
 
-package "Qenta Payments" {
-    [EMConnect]
-}
-
-package "Global payment paywalls" {
+rectangle "Global payment paywalls & Banks" {
     [PayPal]
-    [Pioneer]
+    [Payoneer]
     [Local & Regional Banks]
 }
 
-OU .down.> [ProWallet Console] : Buy, sell, transfer \n & manage assets
+
+OU .down.> [ProWallet Console] : Manage recipients \n & batches
 
 [ProWallet Console] .left.> [HTTP] : Use
-[SDK] .down.> [HTTP] : Create orders, transfer
+[SDK] .down.> [HTTP] : Create batch
 
 [API Gateway] .down.> [Orders service] : forward
+
 [Orders service] .left.> [Pricing service] : Use
-[Orders service] .right.> [Payment service] : Use
-[Transfer service] .right.> [Pricing service] : Use
+[Transfer service] .left.> [Notification service] : Use
 
-[Transfer service] .down.> [Wallets]
-[Orders service] .down.> [Wallets]
+[Transfer service] .down.> [Wallets] : Use
 
-[Payment service] <.right.> [EMConnect] : Use
+[Payment service] <.down.> [EMConnect] : Use
+
 [EMConnect] .down.> [Local & Regional Banks] : Integrates
 
 @enduml
