@@ -7,12 +7,14 @@ permissions:
   pages: write
 
 env:
-  INSTANCE: Writerside/p
-  ARTIFACT: webHelpP2-all.zip
+  PROWALLET_INSTANCE: Writerside/prowallet
+  PROWALLET_ARTIFACT: webHelpPROWALLET2-all.zip
+  PROWALLET_DIRECTORY: prowallet
   DOCKER_VERSION: 233.14389
 
 jobs:
   build:
+    name: "Generate documentation"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,37 +23,27 @@ jobs:
       - name: Build docs using Writerside Docker builder
         uses: JetBrains/writerside-github-action@v4
         with:
-          instance: ${{ env.INSTANCE }}
-          artifact: ${{ env.ARTIFACT }}
+          instance: ${{ env.PROWALLET_INSTANCE }}
+          artifact: ${{ env.PROWALLET_ARTIFACT }}
           docker-version: ${{ env.DOCKER_VERSION }}
 
-      - name: Save artifact with build results
-        uses: actions/upload-artifact@v3
-        with:
-          name: docs
-          path: |
-            artifacts/${{ env.ARTIFACT }}
-            artifacts/report.json
-          retention-days: 7
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: docs
-          path: artifacts
+      - name: Copy ProWallet docs
+        run: mkdir -p docs/${{ env.PROWALLET_DIRECTORY }} && cp -r artifacts/* docs/${{ env.PROWALLET_DIRECTORY }}
 
-      - name: Test documentation
-        uses: JetBrains/writerside-checker-action@v1
+      -  name: Copy index.html to root directory
+         run: cp index.html docs/index.html
+
+      - name: Save artifact with build results
+        uses: actions/upload-artifact@v4
         with:
-          instance: ${{ env.INSTANCE }}
+          name: docs
+          path: docs/*
+          retention-days: 7
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: [build, test]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
@@ -59,8 +51,13 @@ jobs:
         with:
           name: docs
 
+      - name: Create html content folder
+        run: |
+          mkdir -p dir
+          cp index.html dir/index.html
+
       - name: Unzip artifact
-        run: unzip -O UTF-8 -qq ${{ env.ARTIFACT }} -d dir
+        run: unzip -O UTF-8 -qq ${{ env.PROWALLET_DIRECTORY }}/${{ env.PROWALLET_ARTIFACT }} -d dir/${{ env.PROWALLET_DIRECTORY }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
