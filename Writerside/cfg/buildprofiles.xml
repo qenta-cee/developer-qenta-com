@@ -14,4 +14,9 @@
     <footer>
         <copyright>Qenta 2024</copyright>
     </footer>
+    <build-profile instance="p">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
 </buildprofiles>
