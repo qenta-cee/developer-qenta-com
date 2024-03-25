@@ -2,11 +2,13 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <variables>
         <primary-color>iris</primary-color>
-        <custom-favicons>https://guides.qenta.com/_/img/Favicon-QENTA-RGB.png</custom-favicons>
+        <custom-favicons>https://qenta.com/wp-content/uploads/2023/05/favicon.png</custom-favicons>
         <header-logo>qenta_logo.png</header-logo>
-        <product-web-url>https://qenta.com/</product-web-url>
+        <product-web-url>https://prowallet.gcoin.com/</product-web-url>
+        <!--
         <download-title>Developer Portal</download-title>
         <download-page>https://example.com</download-page>
+        -->
         <showDownloadButton>false</showDownloadButton>
         <noindex-content>true</noindex-content>
     </variables>

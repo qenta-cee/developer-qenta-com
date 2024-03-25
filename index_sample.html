@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://qenta.com/wp-content/uploads/2023/05/favicon.png" type="image/x-icon" />
+    <title>Developer Portal | Qenta</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: var(--rs-font-family-ui,var(--rs-font-family-jb-sans,"JetBrains Sans",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Droid Sans","Helvetica Neue",Arial,sans-serif));
+        }
+        header {
+          background-color: #303033;
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          padding: 10px;
+          gap: 10px;
+        }
+        header h4 {
+          color: white;
+          margin: 0;
+          font-weight: var(--rs-font-weight-semi-bold, 530);
+          line-height: var(--rs-h4-line-height, 24px);
+        }
+        section {
+          padding: 80px 120px;
+        }
+        section h1 {
+          color: #19191c;
+          font-size: 43px;
+        }
+        section h2 {
+          color: #19191c;
+          font-size: 32px;
+          margin-block-end: 1.5em;
+        }
+        section p.subtitle {
+          color: #19191c;
+          font-size: 29px;
+          font-weight: 320;
+          line-height: 39px;
+          margin-bottom: 50px;
+          padding-right: 200px;
+        }
+        .grid-container {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+        }
+        .card {
+          padding: 20px;
+          border: 1px solid #c1c1c1;
+          transition: all ease;
+          min-height: 200px;
+          display: flex;
+          flex-direction: column;
+          align-items: baseline;
+          justify-content: left;
+          position: relative;
+        }
+        .card:hover {
+          transform: scale(1.03);
+        }
+        .card a {
+          text-decoration: none;
+          color: inherit;
+        }
+        .card-icon {
+          top: 10px;
+          left: 10px;
+          width: 150px;
+        }
+        .card h3 {
+          text-align: left;
+          margin-block-start: 1.5em;
+          margin-block-end: 0.7em;
+        }
+        .card p.description {
+          color: rgba(25,25,28,.7);
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+        }
+        footer {
+            font-size: 13px;
+            background-color: #303033;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        footer a {
+            color: white;
+        }
+
+        footer div.footer__left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-left: 20px;
+        }
+
+        footer div.footer__right {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <img
+            src="https://developer.qenta.com/prowallet/images/qenta_logo.png"
+            alt="QENTA Logo"
+            style="height: 50px; margin-left: 20px; margin-right: 15px;"
+    />
+    <h4>Qenta Documentation</h4>
+</header>
+<section>
+    <h1>Qenta Product Documentation</h1>
+    <p class="subtitle">
+        Need help? Here is the complete coverage for all the products and services provided by Qenta.
+    </p>
+    <h2>Products</h2>
+    <div class="grid-container">
+        <div class="card">
+            <a href="/prowallet">
+                <img src="prowallet_logo.png" alt="ProWallet icon" class="card-icon">
+                <h3>ProWallet</h3>
+                <p class="description">ProWallet allows you to perform mass payments and manage your treasury</p>
+            </a>
+        </div>
+    </div>
+</section>
+<footer>
+    <div class="footer__left">
+        <p>Copyright &copy; Qenta 2024</p>
+    </div>
+    <div class="footer__right">
+        <p>Powered by <a target="_blank" href="https://qenta.com/">Qenta</a></p>
+    </div>
+</footer>
+</body>
+</html>
