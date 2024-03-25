@@ -30,8 +30,10 @@ jobs:
       - name: Copy ProWallet docs
         run: mkdir -p docs/${{ env.PROWALLET_DIRECTORY }} && cp -r artifacts/* docs/${{ env.PROWALLET_DIRECTORY }}
 
-      -  name: Copy index.html to root directory
-         run: cp index.html docs/index.html
+      -  name: Copy index_sample.html to root directory
+         run: |
+           cp index_sample.html docs/index.html
+           cp prowallet_logo.png docs/prowallet_logo.png
 
       - name: Save artifact with build results
         uses: actions/upload-artifact@v3
@@ -55,6 +57,7 @@ jobs:
         run: |
           mkdir -p dir
           cp index.html dir/index.html
+          cp prowallet_logo.png dir/prowallet_logo.png
 
       - name: Unzip artifact
         run: unzip -O UTF-8 -qq ${{ env.PROWALLET_DIRECTORY }}/${{ env.PROWALLET_ARTIFACT }} -d dir/${{ env.PROWALLET_DIRECTORY }}
