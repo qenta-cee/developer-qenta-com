@@ -10,7 +10,7 @@ To use the SDK or the Proxy Server you will need to configure them. The configur
 <procedure title="Getting SDK configuration">
 <step>
 Once you logged into the console. Go to the <code>SDK SETTINGS</code> option in the <code>Manage</code> menu.
-<img src="ProWallet_ManageMenu_SDKSettings.png" alt="SDK Settings"/>
+<img src="prowallet_sdk_settings_contextual_menu.png" alt="SDK Settings"/>
 </step>
 <step>
 In the <code>SDK Settings</code> home screen you wil be able to see the following information:
@@ -30,14 +30,14 @@ In the <code>SDK Settings</code> home screen you wil be able to see the followin
 </li>
 </list>
 
-<img src="ProWallet_SDK_Settings.png" alt="SDK Settings home"/>
+<img src="prowallet_sdk_settings_screen.png" alt="SDK Settings home"/>
 
 <note>The variable values can be used as environment variables or generate a JSON file by clicking on 'DOWNLOAD JSON' button</note>
 
 </step>
 <step>
 ProWallet will require you user secret before to allow see or copy the <code>Private key</code> value.
-<img src="ProWallet_SDK_Settings_GetPrivateKey.png" alt="Get private key"/>
+<img src="prowallet_sdk_settings_get_private_key.png" alt="Get private key"/>
 <warning>Private key is used to sign each transaction, avoid to share it</warning>
 </step>
 </procedure>
