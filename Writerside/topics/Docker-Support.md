@@ -5,33 +5,33 @@ a RESTful API with JSON payloads to use SDK methods using a standard HTTP connec
 
 ```plantuml
 @startuml
+!include <C4/C4_Container>
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-scale max 800 width
+title Qenta docker support
+footer Qenta ProWallet
 
-package "External System"{
-    node "VPC" {
-        node "Non-Java based" {
-            OutPort -left- [Backend]
+skinparam linetype ortho
+
+Boundary(customerSystems, "Customer Systems") {
+    System_Ext(customerApplication, "Customer Application", "A customer-facing application")
+    System_Boundary(dockerBased, "Docker-based Runtime") {
+        Container(qentaSDKServer, "Qenta SDK Server") {
+            Component(qentaSDK, "Qenta SDK for Java", "Java SDK for Qenta")
         }
-        node "Docker-based environment" {
-            RestAPI -down- [ProxyServer] 
-            component ProxyServer {
-                [SDK] #orange
-            }
-        }
-        OutPort .down.> RestAPI : POST \n http://localhost:8080
     }
 }
 
-package "Qenta" {
-    HTTP - [Qenta Rest APIs]
-    [API Gateway] .right.> HTTP
+Boundary(qentaSystems, "Qenta Systems") {
+    Container(apiGateway, "API Gateway", "API Gateway for Qenta")
+    System(qentaServices, "Qenta Services", "Qenta microservices ecosystem")
 }
 
-SDK .right.> [API Gateway]
-
+Rel(customerApplication, qentaSDKServer, "Consumes as HTTP REST API")
+Rel(qentaSDK, apiGateway, "Consumes as HTTP REST API")
+Rel(apiGateway, qentaServices, "Forwards to")
 @enduml
-
 ```
 
 ## Running the docker image
