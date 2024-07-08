@@ -31,8 +31,7 @@ System_Boundary(qentaEcosystem, "Qenta Ecosystem") {
         Component(pricingService, "Pricing Service", "Microservice", "Handles pricing logic")
         Component(notificationService, "Notification Service", "Microservice", "Manages notifications")
         Component(paymentService, "Payment Service", "Microservice", "Processes payments")
-        Component(ordersService, "Orders Service", "Microservice", "Manages orders")
-        Component(transferService, "Transfer Service", "Microservice", "Handles transfers")
+        Component(eCommerceService, "ECommerce Service", "Microservice", "Handles swap, transfer, buy and sell operations")
     }
 
     Container_Boundary(qentaPayments, "Qenta Payments") {
@@ -54,10 +53,10 @@ Rel(OU, proWalletConsole, "Uses")
 Rel(sdk, apiGateway, "Interacts via")
 Rel(proWalletConsole, apiGateway, "Interacts via")
 
-Rel(apiGateway, ordersService, "Forwards requests to")
-Rel(ordersService, pricingService, "Utilizes")
-Rel(transferService, notificationService, "Utilizes")
-Rel(transferService, wallets, "Utilizes")
+Rel(apiGateway, coreServices, "Forwards requests to")
+Rel(eCommerceService, pricingService, "Utilizes")
+Rel(eCommerceService, notificationService, "Utilizes")
+Rel(eCommerceService, wallets, "Utilizes")
 Rel(paymentService, emConnect, "Utilizes")
 
 Rel(emConnect, banks, "Integrates with")
