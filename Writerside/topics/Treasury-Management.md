@@ -4,82 +4,66 @@
 
 ```plantuml
 @startuml
+!include <C4/C4_Container>
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 scale max 870 width
+skinparam linetype ortho
 skinparam actorStyle awesome
 
-rectangle "Organization" <<Company>> {
-    component "System" {
-        [SDK] #orange
-    }
-    actor "Organization User" as OU
+title Treasury Management Reference Architecture
+footer Qenta ProWallet
+
+Person(OU, "Organization User", "User managing recipients & batches")
+System_Boundary(org, "Organization") {
+    Container(sdk, "SDK", "System", "Software Development Kit for integration")
 }
 
-rectangle "Qenta ecosystem" {
+System_Boundary(qentaEcosystem, "Qenta Ecosystem") {
+    Container(apiGateway, "API Gateway", "Interface", "HTTP API Gateway")
 
-    interface "HTTP" as HTTP
-    HTTP -down- [API Gateway]
-    
-    rectangle "ProWallet ecosystem" {
-
-
-        rectangle "User interface" {
-            [ProWallet Console] #orange
-        }
-
-        component "Mass transfer engine" as engine {
-            [Recipients service]
-            [Batch service]
-        }
-
-
+    Container_Boundary(proWalletEcosystem, "ProWallet Ecosystem") {
+        Container(proWalletConsole, "ProWallet Console", "Web application", "User interface for managing mass transfers")
     }
 
-    rectangle "Qenta Payments" {
-        [EMConnect]
-        [Qenta CEE]
+    Container_Boundary(coreServices, "Core Services") {
+        Component(pricingService, "Pricing Service", "Microservice", "Handles pricing logic")
+        Component(notificationService, "Notification Service", "Microservice", "Manages notifications")
+        Component(paymentService, "Payment Service", "Microservice", "Processes payments")
+        Component(eCommerceService, "ECommerce Service", "Microservice", "Handles swap, transfer, buy and sell operations")
     }
 
-    component "Core services" as core {
-            [Pricing service] #orange
-            [Notification service]
-            [Payment service] #orange
-            [Orders service] #orange
-            [Transfer service] #orange
-        }
-
-    component "QoS" as BC <<Blockchain>> {
-        [Wallets]
-        [Contracts]
+    Container_Boundary(qentaPayments, "Qenta Payments") {
+        Component(emConnect, "EM Connect", "Microservice", "Integrates with banks and payment services")
+        Component(qentaCEE, "Qenta CEE", "Microservice", "Central and Eastern Europe payment processing")
     }
 
+    Container_Boundary(qos, "QoS", "Blockchain") {
+        Component(wallets, "Wallets", "Solidity", "Manages blockchain wallets")
+        Component(contracts, "Contracts", "Solidity", "Smart contracts for operations")
+    }
 }
 
-rectangle "Global payment paywalls & Banks" {
-    [PayPal]
-    [Payoneer]
-    [Local & Regional Banks]
-}
+System_Ext(paypal, "Paypal", "Global payment service")
+System_Ext(payoneer, "Payoneer", "Global payment service")
+System_Ext(banks, "Local & Regional Banks", "Financial institutions")
 
+Rel(OU, proWalletConsole, "Uses")
+Rel(sdk, apiGateway, "Interacts via")
+Rel(proWalletConsole, apiGateway, "Interacts via")
 
-OU .down.> [ProWallet Console] : Manage recipients \n & batches
+Rel(apiGateway, coreServices, "Forwards requests to")
+Rel(eCommerceService, pricingService, "Utilizes")
+Rel(eCommerceService, notificationService, "Utilizes")
+Rel(eCommerceService, wallets, "Utilizes")
+Rel(paymentService, emConnect, "Utilizes")
 
-[ProWallet Console] .left.> [HTTP] : Use
-[SDK] .down.> [HTTP] : Create batch
-
-[API Gateway] .down.> [Orders service] : forward
-
-[Orders service] .left.> [Pricing service] : Use
-[Transfer service] .left.> [Notification service] : Use
-
-[Transfer service] .down.> [Wallets] : Use
-
-[Payment service] <.down.> [EMConnect] : Use
-
-[EMConnect] .down.> [Local & Regional Banks] : Integrates
+Rel(emConnect, banks, "Integrates with")
+Rel(emConnect, paypal, "Integrates with")
+Rel(emConnect, payoneer, "Integrates with")
 
 @enduml
 ```
 
-## Purchase orders
 

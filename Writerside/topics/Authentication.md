@@ -17,21 +17,21 @@ To generate an `access token`, you need to log into the [ProWallet](%prowallet_u
 <step>
 Once your logged into the console. Go to the <code>TOKENS</code> option in <code>Manage</code> menu.
 
-<img src="ProWallet_Manage_Token_Contextual.png" alt="Alt Text"/>
+<img src="prowallet_manage_contextual_menu.png" alt="Alt Text"/>
 
 </step>
 
 <step>
 In the access token management screen click on <code>GENERATE NEW TOKEN</code> button.
 
-<img src="ProWallet_Manage_AccessToken_Screen.png" alt="Alt Text"/>
+<img src="prowallet_access_token_management_screen.png" alt="Alt Text"/>
 
 </step>
 
 <step>
 In the form, enter a <strong>token name</strong> and <strong>expiration time</strong>.
 
-<img src="ProWallet_NewAccessToken_Screen.png" alt="Alt Text"/>
+<img src="prowallet_new_access_token_screen.png" alt="Alt Text"/>
 
 <warning>
 <p>If the expiration time is not set, then the token will expire in 360 days</p>
@@ -42,7 +42,7 @@ In the form, enter a <strong>token name</strong> and <strong>expiration time</st
 <step>
 Once the toke is generated, you could copy it and use it for the API calls
 
-<img src="ProWallet_AccessToken_SuccessCreated.png" alt="Alt Text"/>
+<img src="prowallet_access_token_success_created.png" alt="Alt Text"/>
 
 </step>
 

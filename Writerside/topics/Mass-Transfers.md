@@ -1,117 +1,89 @@
 # Mass Transfers
 
-
 ## Reference architecture
 
 ```plantuml
 @startuml
+!include <C4/C4_Container>
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-scale max 870 width
-skinparam actorStyle awesome
+LAYOUT_WITH_LEGEND()
 
-rectangle "B2C" <<Person>> {
-    actor "Recipient" as Recipient
+scale max 850 width
+skinparam linetype ortho
+
+title Prowallet container diagram
+footer Qenta ProWallet
+
+Boundary(customer, "Customer") {
+    Person(user, "Customer user")
+    System_Boundary(customerSystem, "Customer System"){
+        Container(qentaSDK, "Qenta SDK", "Java based SDK")
+    }
 }
 
-rectangle "Organization" <<Company>> {
-    component "System" {
-        [SDK] #orange
-    }
-    actor "Organization User" as OU
-}
-
-rectangle "Qenta ecosystem" {
-
-    [Qenta App]
-
-    rectangle "ProWallet ecosystem" {
-
-        interface "HTTP" as HTTP
-        HTTP -down- [API Gateway]
-
-        rectangle "User interface" {
-            [ProWallet Console]
-        }
-
-        component "Mass transfer engine" as engine {
-            [Recipients service] #orange
-            [Batch service] #orange
-        }
-
-
+System_Boundary(qentaEcosystem, "Qenta Ecosystem") {
+    Container_Boundary(proWalletConsole, "ProWallet user interface") {
+        Container(proWalletWeb, "ProWallet Web", "Web application")
     }
 
-    rectangle "Qenta Payments" {
-        [EMConnect]
-        [Qenta CEE]
+    Container(apiGateway, "API Gateway")
+
+    Container_Boundary(massiveTransactions, "Massive Transactions API") {
+        Component(transactionBatches, "Transactions Batchs", "Java")
+        Component(recipientsManagement, "Recipients", "Java")
     }
 
-    component "Core services" as core {
-            [Pricing service] #orange
-            [Notification service]
-            [Payment service] #orange
-            [Orders service]
-            [Transfer service]
-        }
+    Container_Boundary(coreService, "Core Microservices"){
+        Component(jwt, "JWT", "Microservice")
+        Component(pricing, "Pricing", "Microservice")
+        Component(registration, "Registration", "Microservice")
+        Component(payment, "Payment", "Microservice")
+        Component(comm, "Comm", "Microservice")
+        Component(pyWallet, "PyWallet", "Microservice")
+    }
 
-    component "QoS" as BC <<Blockchain>> {
-        [Wallets]
-        [Contracts]
+    Container_Boundary(qos, "QoS"){
+        Component(wallets, "Wallets", "Solidity")
+        Component(contracts, "Contracts", "Solidity")
+    }
+
+    Container_Boundary(qentaPayments, "Qenta Payments"){
+        Component(qentaCEE, "Qenta CEE", "Microservice")
+        Component(emConnect, "EM Connect", "Microservice")
     }
 
 }
 
-rectangle "Global payment paywalls & Banks" {
-    [PayPal]
-    [Payoneer]
-    [Local & Regional Banks]
+Boundary(thirdPartyPayWalls, "Global payment paywalls & Banks") {
+    System_Ext(banks, "Local & Regional Banks")
+    System_Ext(paypal, "Paypal")
+    System_Ext(payoneer, "Payoneer")
 }
 
+Rel(user, proWalletWeb, "Uses")
+Rel(proWalletWeb, apiGateway, "Calls")
+Rel(qentaSDK, apiGateway, "Calls")
 
-OU .down.> [ProWallet Console] : Manage recipients \n & batches
-Recipient .down.> [Qenta App] : Uses
+Rel(apiGateway, massiveTransactions, "Exposes")
 
-[ProWallet Console] .left.> [HTTP] : Use
-[SDK] .down.> [HTTP] : Create batch
 
-[API Gateway] .down.> [Batch service] : forward
-[API Gateway] .down.> [Recipients service] : forward
-[Batch service] .down.> [Pricing service] : Use
-[Recipients service] .down.> [Notification service] : Use
+Rel(apiGateway, coreService, "Exposes")
 
-[Transfer service] .down.> [Wallets] : Use
+Rel(transactionBatches, pricing, "Uses")
+Rel(transactionBatches, pyWallet, "Uses")
+Rel(recipientsManagement, comm, "Uses")
 
-[Qenta App] .down.> [Payment service] : Pay
+Rel(pyWallet, wallets, "Uses")
 
-[Payment service] <.down.> [EMConnect] : Use
+Rel(payment, qentaCEE, "Integrates")
 
-[EMConnect] .down.> [Local & Regional Banks] : Integrates
+Rel(emConnect, banks, "Integrates")
+Rel(emConnect, paypal, "Integrates")
+Rel(emConnect, payoneer, "Integrates")
 
 @enduml
 ```
 
-## Managing Recipients
-
-Before to include a recipient into a payment batch you need to onboard him. The recipient is the person that will receive the payment.
-
-### Onboarding
-
-```plantuml
-@startuml
-
-!theme _none_
-
-|Organization|
-start
-    :Onboard recipient;
-|Recipient|
-    if (Already user?) then (yes)
-        :Notify subscription;
-    else (no)
-        :Send invitation;
-    endif
-stop
-
-@enduml
-```
 
